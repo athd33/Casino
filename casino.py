@@ -27,7 +27,7 @@ def get_username():
 
 def user_bet_function():					#fonction pour récupérer la somme misée par le joueur
 	global user_bet 
-	user_bet = input("Combien souhaitez vous miser?")
+	user_bet = input("Combien souhaitez vous miser? Attention, vous disposez de {} $ ".format(money))
 	try:
 		user_bet = int(user_bet)
 	except:
@@ -56,7 +56,7 @@ def user_numbers_choice():
 	except:
 		print("J'ai mal compris...")
 		user_numbers_choice()
-	if users_choice <= -1 and users_choice >= 51:
+	if users_choice <= -1 or users_choice >= 51:
 		print("Attention, entre 50 et 0! Merci")
 		user_numbers_choice()
 	else:
@@ -65,7 +65,6 @@ def user_numbers_choice():
 def random_number_function():				#création d'une fonction pour générer un nombre aléatoire avec random
 	global random_number 					#variable globale pour la sortir de la fonction
 	random_number = random.randrange(50)
-	print(random_number)
 	result()
 
 
@@ -73,18 +72,24 @@ def result():
 	global money
 	if random_number == users_choice:
 		money = money + (user_bet * 3)
-		print("Bravo")		
+		print("Rien ne va plus....")		
 		time.sleep(1)
+		print('Bravo!!! C\'est le {} qui est sorti! '.format(random_number))
 		print("Vous avez maintenant {} $".format(money))
 		play_again()
 	elif users_choice % 2 == 0 and random_number % 2 == 0:  # utilisation de modulo pour définir si on ajoute les 50% à la mise
 		money = money + (user_bet / 2)
-		print('Pas mal, vous empochez la moitié de votre mise. Vous avez désormais {} $'.format(money))
+		print("Rien ne va plus....")		
+		time.sleep(1)
+		print('Pas mal, le {} vous empochez la moitié de votre mise. Vous avez désormais {} $'.format(random_number ,money))
 		time.sleep(1)
 		print("Vous disposez de {} $".format(money))
 		play_again()
 	else:
-		print("Perdu")
+		money = money - user_bet
+		print("Rien ne va plus....")		
+		time.sleep(1)
+		print("Perdu! c'est le {} qui est sorti! Il vous reste {} $, on recommence?".format(random_number, money))
 		time.sleep(2)
 		play_again()
 
