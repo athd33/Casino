@@ -10,24 +10,26 @@ user_name = ""				#création d'une variable str pour le nom d'utilisateur
 
 	# FONCTIONS
 
+def myprint(message):		#création de la fonction myprint() avec un time.sleep(1)
+	time.sleep(1)
+	print(message)
 
 def get_username():
-	global user_name		# je déclare user_name en variable globale pour la prendre en compte hors de la fonction
-	time.sleep(1)			# un délai d'une seconde
 	user_name = input("Quel est votre nom?")
 
 	try:								#vérifier le type de user_name dans la condition if avec le try/except
 		user_name = int(user_name)
-		print("Votre nom est un numéro? Soyons sérieux...")
+		myprint("Votre nom est un numéro? Soyons sérieux...")
 		get_username()
 	except:
-		print("Parfait {}, nous allons pouvoir commencer".format(user_name))
+		myprint(f"Parfait {user_name}, nous allons pouvoir commencer")
 		user_bet_function()
+	return user_name
 
 
-def user_bet_function():					#fonction pour récupérer la somme misée par le joueur
-	global user_bet 
-	user_bet = input("Combien souhaitez vous miser? Attention, vous disposez de {} $ ".format(money))
+def user_bet_function():	#fonction pour récupérer la somme misée par le joueur
+	global user_bet
+	user_bet = input(f"Combien souhaitez vous miser? Attention, vous disposez de {money} $ ")
 	try:
 		user_bet = int(user_bet)
 	except:
@@ -35,16 +37,15 @@ def user_bet_function():					#fonction pour récupérer la somme misée par le j
 		user_bet_function()
 
 	if user_bet <= 0:
-		print("Sans argent, impossible de payer.")
-		time.sleep(2)
-		print("Revenez avec des sous...")
+		myprint("Sans argent, impossible de payer.")
+		myprint("Revenez avec des sous...")
 		exit()
 	elif user_bet > money:
-		time.sleep(1)
-		print("Vous n'avez pas les fonds sufisants. Actuellement vous avez {} $".format(money))
+		myprint(f"Vous n'avez pas les fonds sufisants. Actuellement vous avez {money} $")
 		user_bet_function()
 	else:
 		user_numbers_choice()
+		return user_bet
 
 
 def user_numbers_choice():
@@ -61,6 +62,7 @@ def user_numbers_choice():
 		user_numbers_choice()
 	else:
 		random_number_function()
+		result()
 
 def random_number_function():				#création d'une fonction pour générer un nombre aléatoire avec random
 	global random_number 					#variable globale pour la sortir de la fonction
@@ -72,36 +74,31 @@ def result():
 	global money
 	if random_number == users_choice:
 		money = money + (user_bet * 3)
-		print("Rien ne va plus....")		
-		time.sleep(1)
-		print('Bravo!!! C\'est le {} qui est sorti! '.format(random_number))
-		print("Vous avez maintenant {} $".format(money))
+		myprint("Rien ne va plus....")
+		myprint(f"Bravo!!! C'est le {random_number} qui est sorti! ")
+		myprint(f"Vous avez maintenant {money} $")
 		play_again()
-	elif users_choice % 2 == 0 and random_number % 2 == 0:  # utilisation de modulo pour définir si on ajoute les 50% à la mise
+	elif (users_choice % 2) == 0 and (random_number % 2) == 0:  # utilisation de modulo pour définir si on ajoute les 50% à la mise
 		money = money + (user_bet / 2)
-		print("Rien ne va plus....")		
-		time.sleep(1)
-		print('Pas mal, le {} vous empochez la moitié de votre mise. Vous avez désormais {} $'.format(random_number ,money))
-		time.sleep(1)
-		print("Vous disposez de {} $".format(money))
+		myprint("Rien ne va plus....")
+		myprint(f"Pas mal, le {random_number} vous empochez la moitié de votre mise. Vous avez désormais {money} $")
+		myprint(f"Vous disposez de {money} $")
 		play_again()
 	else:
 		money = money - user_bet
-		print("Rien ne va plus....")		
-		time.sleep(1)
-		print("Perdu! c'est le {} qui est sorti! Il vous reste {} $, on recommence?".format(random_number, money))
-		time.sleep(2)
+		myprint("Rien ne va plus....")
+		myprint(f"Perdu! c'est le {random_number} qui est sorti! Il vous reste {money} $, on recommence?")
 		play_again()
 
 def play_again():
 	global current_game
 	again = input("Rejouer??")
 	if again == "oui":
-		time.sleep(1)
 		user_bet_function()
 	else:
-		print("Ok, au revoir")
+		myprint("Ok, au revoir")
 		current_game = False
+		exit()
 		
 
 
